@@ -38,6 +38,7 @@ class RobomasterMotor{
         ~RobomasterMotor();
 
 		void setMotorType(uint8_t id, uint8_t type);		// モーターの型を指定する(M3508 or M2006)
+		void setMotorTorque(uint8_t id, bool is_torque);
 
 		void setTargetRpm(uint8_t id, int16_t rpm);
 		void setTargetPosition(uint8_t id, int64_t pos);
@@ -71,6 +72,7 @@ class RobomasterMotor{
 		bool flag_motorControl[8] = {}; 			// モーターを制御するかどうかのフラグ
 		bool is_spdControl[8] = {}; 				// 速度制御を行うかどうか
 		bool is_posControl[8] = {}; 				// 位置制御を行うかどうか
+		bool is_torque[8] = {};
 
 		int16_t calculateVelocity(uint8_t id);		// 位置制御PIDから求まった目標速度を計算する
 		int16_t calculateCurrent(uint8_t id);		// 速度制御PIDから求まった目標電流値を計算する

@@ -35,6 +35,11 @@ void RobomasterMotor::setMotorType(uint8_t id, uint8_t type) {
             break;
     }
     flag_motorControl[id-1] = true;
+    is_torque[id-1] = true;
+}
+
+void RobomasterMotor::setMotorTorque(uint8_t id, bool is_torque){
+    this->is_torque[id-1] = is_torque;
 }
 
 void RobomasterMotor::setRpmPIDgain(uint8_t id, PIDGain rpm_gain){
@@ -102,7 +107,11 @@ void RobomasterMotor::sendMotorData() {
 void RobomasterMotor::interruptHandler(){
     for(int id=1; id<=8; id++){
         instance->readMotorParam(id);
-        instance->controlDataList[id-1].target_ampare = instance->getOutputValue(id);
+        if(instance->is_torque[id-1] == true){
+            instance->controlDataList[id-1].target_ampare = instance->getOutputValue(id);
+        }else{
+            instance->controlDataList[id-1].target_ampare = 0;
+        }
     }
     instance->sendMotorData();
 }
